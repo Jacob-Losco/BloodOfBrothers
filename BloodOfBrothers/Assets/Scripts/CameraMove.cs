@@ -9,6 +9,7 @@ public class CameraMove : MonoBehaviour
     public float ySpeed = 200;
     public float xSpeed = 20;
     public float borderRatio = 0.3f;
+    public bool mouseLock = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,24 +28,34 @@ public class CameraMove : MonoBehaviour
             this.transform.position += Time.deltaTime * ySpeed * Vector3.up;
         }
         Vector3 mousePos = Input.mousePosition;
-        Debug.Log(mousePos);
         float borderY = borderRatio * Screen.height;
         float borderX = borderRatio * Screen.width;
-        if (mousePos.y > Screen.height - borderY)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            this.transform.position += Time.deltaTime * xSpeed * this.transform.up;
+            mouseLock = !mouseLock;
         }
-        if (mousePos.y < borderY)
+        if (Input.GetKey(KeyCode.Mouse0))
         {
-            this.transform.position -= Time.deltaTime * xSpeed * this.transform.up;
+            mouseLock = true;
         }
-        if (mousePos.x > Screen.width - borderX)
+        if (mouseLock)
         {
-            this.transform.position += Time.deltaTime * xSpeed * this.transform.right;
-        }
-        if (mousePos.x < borderX)
-        {
-            this.transform.position -= Time.deltaTime * xSpeed * this.transform.right;
+            if (mousePos.y > Screen.height - borderY)
+            {
+                this.transform.position += Time.deltaTime * xSpeed * this.transform.up;
+            }
+            if (mousePos.y < borderY)
+            {
+                this.transform.position -= Time.deltaTime * xSpeed * this.transform.up;
+            }
+            if (mousePos.x > Screen.width - borderX)
+            {
+                this.transform.position += Time.deltaTime * xSpeed * this.transform.right;
+            }
+            if (mousePos.x < borderX)
+            {
+                this.transform.position -= Time.deltaTime * xSpeed * this.transform.right;
+            }
         }
     }
 }

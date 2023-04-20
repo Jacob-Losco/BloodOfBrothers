@@ -104,9 +104,8 @@ public class Unit : MonoBehaviour
         GameObject obj = other.gameObject;
         try
         {
-            Unit stats = GetComponent<Unit>();
-            Unit stats2 = obj.GetComponent<Unit>();
-            if (stats.team != stats2.team)
+            Unit stats = obj.GetComponent<Unit>();
+            if (this.team != stats.team)
             {
                 AddTarget(obj);
             }

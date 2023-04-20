@@ -13,11 +13,7 @@ public class ActionManager : MonoBehaviour
     private Coroutine selectionRoutine;
 
     [SerializeField] private Camera _mainCamera;
-    public float minHeight = 10;
-    public float maxHeight = 200;
-    public float ySpeed = 200;
-    public float xSpeed = 20;
-    public float borderRatio = 0.3f;
+    
 
     private void Awake ()
     {

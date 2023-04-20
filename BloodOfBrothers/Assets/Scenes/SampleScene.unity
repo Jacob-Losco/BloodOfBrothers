@@ -434,7 +434,7 @@ MonoBehaviour:
   maxHeight: 100
   ySpeed: 200
   xSpeed: 20
-  borderRatio: 0.3
+  borderRatio: 0.2
 --- !u!1001 &1408748514
 PrefabInstance:
   m_ObjectHideFlags: 0
