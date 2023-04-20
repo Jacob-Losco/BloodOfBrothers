@@ -35,34 +35,6 @@ public class ActionManager : MonoBehaviour
         {
             EndSelection();
         }
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && _mainCamera.transform.position.y > minHeight)
-        {
-            _mainCamera.transform.position +=  Time.deltaTime * ySpeed * Vector3.down;
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0 && _mainCamera.transform.position.y < maxHeight)
-        {
-            _mainCamera.transform.position += Time.deltaTime * ySpeed * Vector3.up;
-        }
-        Vector3 mousePos = Input.mousePosition;
-        Debug.Log(mousePos);
-        float borderY = borderRatio * Screen.height;
-        float borderX = borderRatio * Screen.width;
-        if (mousePos.y > Screen.height - borderY)
-        {
-            _mainCamera.transform.position += Time.deltaTime * xSpeed * _mainCamera.transform.up;
-        }
-        if (mousePos.y < borderY)
-        {
-            _mainCamera.transform.position -= Time.deltaTime * xSpeed * _mainCamera.transform.up;
-        }
-        if (mousePos.x > Screen.width - borderX)
-        {
-            _mainCamera.transform.position += Time.deltaTime * xSpeed * _mainCamera.transform.right;
-        }
-        if (mousePos.x < borderX)
-        {
-            _mainCamera.transform.position -= Time.deltaTime * xSpeed * _mainCamera.transform.right;
-        }
     }
     
     public void StartSelection()
