@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 273021931206496612}
   - component: {fileID: 252915139750024056}
   m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
+  m_Name: Box Collider
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,9 @@ MonoBehaviour:
   target_stats: {fileID: 0}
   range: []
   destination: {x: 0, y: 0, z: 0}
-  rotationSpeed: 0.5
+  rotationSpeed: 2
+  debugDamage: 0
+  debugPreventDeath: 1
 --- !u!135 &5854592096264305038
 SphereCollider:
   m_ObjectHideFlags: 0
