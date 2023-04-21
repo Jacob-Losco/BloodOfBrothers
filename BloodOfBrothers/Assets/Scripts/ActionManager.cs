@@ -13,6 +13,7 @@ public class ActionManager : MonoBehaviour
     private Coroutine selectionRoutine;
 
     [SerializeField] private Camera _mainCamera;
+    
 
     private void Awake ()
     {

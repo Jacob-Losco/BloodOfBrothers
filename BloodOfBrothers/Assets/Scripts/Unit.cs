@@ -2,19 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Infantry : MonoBehaviour
+public class Unit : MonoBehaviour
 {
+    public float health = 100;
+    public int team = 0;
     public float damage = 10;
+
     public float elivationModifier = 0.1f; //Added to Damage
     public float distanceModifier = 0.1f; // Subtracted from Damage
     public float flankModifier = 0.1f; //Added to Damage, based on angle of attack
+    
     public GameObject target;
-    public UnitStats target_stats;
+    public Unit target_stats;
     public List<GameObject> range = new List<GameObject>();
     public Vector3 destination;
     public float rotationSpeed = 4;
-    
 
+
+    public bool debugDamage = false;
+    public bool debugPreventDeath = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +30,10 @@ public class Infantry : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (health <= 0 && !debugPreventDeath)
+        {
+            Destroy(this.gameObject);
+        }
         if (target != null)
         {
             Vector3 lookPos = target.transform.position - transform.position;
@@ -56,7 +66,10 @@ public class Infantry : MonoBehaviour
         float modFlank = flank*flankModifier/10;
         float mod = (modFlank + modY);
         float dmg = (damage * mod) / modDist;
-        Debug.Log("Mod:" + mod + " Dist:" + modDist + " Damage:" + dmg);
+        if (debugDamage)
+        {
+            Debug.Log("Mod:" + mod + " Dist:" + modDist + " Damage:" + dmg);
+        }
         return dmg;
     }
     
@@ -111,9 +124,8 @@ public class Infantry : MonoBehaviour
         GameObject obj = other.gameObject;
         try
         {
-            UnitStats stats = GetComponent<UnitStats>();
-            UnitStats stats2 = obj.GetComponent<UnitStats>();
-            if (stats.team != stats2.team)
+            Unit stats = obj.GetComponent<Unit>();
+            if (this.team != stats.team)
             {
                 AddTarget(obj);
             }
