@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     public float elivationModifier = 0.1f; //Added to Damage
     public float distanceModifier = 0.1f; // Subtracted from Damage
     public float flankModifier = 0.1f; //Added to Damage, based on angle of attack
+    public float lerpConstant = 0.02f;
     
     public GameObject target;
     public Unit target_stats;
@@ -30,6 +31,8 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.transform.position = Vector3.Lerp(this.transform.position, destination, lerpConstant);
+
         if (health <= 0 && !debugPreventDeath)
         {
             Destroy(this.gameObject);

@@ -12,6 +12,8 @@ public class ActionManager : MonoBehaviour
     // Stores the current Coroutine controlling he selection process
     private Coroutine selectionRoutine;
 
+    public LayerMask terrainLayer;
+
     [SerializeField] private Camera _mainCamera;
     
 
@@ -23,13 +25,14 @@ public class ActionManager : MonoBehaviour
     // Depending on how exactly you want to start and stop the selection     
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
+        if(Input.GetMouseButtonDown(0)) {
             StartSelection();
         }
-        if(Input.GetMouseButtonUp(0))
-        {
+        if(Input.GetMouseButtonUp(0)) {
             EndSelection();
+        }
+        if(Input.GetKeyDown("space")) {
+            StartCoroutine(SetSelectedDestinations());
         }
     }
     
@@ -63,7 +66,7 @@ public class ActionManager : MonoBehaviour
  
             if(Physics.Raycast(ray, out var hit))
             {
-                if(!selection.Contains(hit.collider.gameObject)) {
+                if(!selection.Contains(hit.collider.gameObject) && hit.collider.gameObject.tag == "PlayerUnit") {
                    selection.Add(hit.collider.gameObject);
                    Debug.Log(selection.Count);
                 }
@@ -73,4 +76,21 @@ public class ActionManager : MonoBehaviour
             yield return null;
         }
     }
+
+    private IEnumerator SetSelectedDestinations() {
+        yield return new WaitForSeconds(0);
+
+        var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if(Physics.Raycast(ray, out hitInfo, 100, terrainLayer)) {
+            Debug.Log(hitInfo.point);
+        }
+
+        foreach (var selectedUnit in selection) {
+            Vector3 unitDestination = new Vector3(hitInfo.point.x + Random.Range(-5, 5), hitInfo.point.y, hitInfo.point.z + Random.Range(-5, 5));
+            selectedUnit.transform.parent.GetComponent<Unit>().destination = unitDestination;
+        }
+    }
 }
+
