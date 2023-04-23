@@ -57,20 +57,21 @@ public class ActionManager : MonoBehaviour
             unit.transform.Rotate(Vector3.up, rotation);
         }
     }
-    #David
+    //David
     private void executeMove()
     {
         var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        GameObject obj = hit.collider.gameObject;
+        
         if (Physics.Raycast(ray, out var hit))
         {
+            GameObject obj = hit.collider.gameObject;
             foreach (Unit unit in selection)
             {
                 if (obj.tag == "Terrain")
                 {
-                    #Jacob
-                    Vector3 unitDestination = new Vector3(hitInfo.point.x + Random.Range(-5, 5), hitInfo.point.y, hitInfo.point.z + Random.Range(-5, 5));
-                    unit.destination = unitDestination
+                    //Jacob
+                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-5, 5), hit.point.y, hit.point.z + Random.Range(-5, 5));
+                    unit.destination = unitDestination;
                 }
                 if (obj.tag == "Unit")
                 {
