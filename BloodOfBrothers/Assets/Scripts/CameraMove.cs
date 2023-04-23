@@ -19,13 +19,16 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > minHeight)
+        if (!Input.GetKey(KeyCode.LeftControl))
         {
-            this.transform.position += Time.deltaTime * ySpeed * Vector3.down;
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0 && this.transform.position.y < maxHeight)
-        {
-            this.transform.position += Time.deltaTime * ySpeed * Vector3.up;
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > minHeight)
+            {
+                this.transform.position += Time.deltaTime * ySpeed * Vector3.down;
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 && this.transform.position.y < maxHeight)
+            {
+                this.transform.position += Time.deltaTime * ySpeed * Vector3.up;
+            }
         }
         Vector3 mousePos = Input.mousePosition;
         float borderY = borderRatio * Screen.height;

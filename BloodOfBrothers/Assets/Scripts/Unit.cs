@@ -46,8 +46,17 @@ public class Unit : MonoBehaviour
             
             target_stats.health -= CalculateDamage();
         }
-        else SetTarget();
+        
+        else UpdateTarget();
+
+        transform.position = Vector3.MoveTowards(transform.position, destination, 2*Time.deltaTime);
     }
+
+    public void SetDestination(Vector3 d)
+    {
+        destination = d + Vector3.up * 0.5f;
+    }
+    
     
     private float CalculateDamage()
     {
@@ -75,32 +84,43 @@ public class Unit : MonoBehaviour
         if (target == g)
         {
             range.Remove(g);
-            SetTarget();   
+            UpdateTarget();   
         }
         else range.Remove(g);
     }
-    private void SetTarget()
+    private void UpdateTarget()
     {
         if (range.Count > 0)
         {
             try
             {
-                target = range[Random.Range(0, range.Count)];
-                target_stats = target.GetComponent<Unit>();
+                SetTarget(range[Random.Range(0, range.Count)]);
             }
             catch
             {
-                target = null;
-                target_stats = null;
+                SetTarget();
             }
-            
         }
         else
         {
-            target = null;
-            target_stats = null;
+            SetTarget();
         }
         
+    }
+    public void SetTarget()
+    {
+        target = null;
+        target = null;
+    }
+    public void SetTarget(Unit unit)
+    {
+        target_stats = unit;
+        target = unit.gameObject;
+    }
+    public void SetTarget(GameObject unit)
+    {
+        target_stats = unit.GetComponent<Unit>();
+        target = unit;
     }
     private void OnTriggerEnter(Collider other)
     {
