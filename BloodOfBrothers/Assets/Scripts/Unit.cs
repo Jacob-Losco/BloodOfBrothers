@@ -22,6 +22,7 @@ public class Unit : MonoBehaviour
     public List<GameObject> range = new List<GameObject>();
     public Vector3 destination;
     public float maxSlope = 5;
+    public ActionManager actionManager;
 
 
     public bool debugDamage = false;
@@ -30,45 +31,45 @@ public class Unit : MonoBehaviour
     void Start()
     {
         destination = transform.position;
+        actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        destination = new Vector3(destination.x, transform.position.y, destination.z);
-        Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
-        Vector3 dir = newPos - transform.position;
-        transform.position = newPos;
-        Ray floor = new Ray(newPos, Vector3.down);
-        Debug.DrawRay(newPos, Vector3.down);
-        Ray collision = new Ray(transform.position, dir.normalized);
-        Debug.DrawRay(newPos, dir.normalized);
-        RaycastHit hit;
-        bool a = Physics.Raycast(collision, 2);
-        bool b = Physics.Raycast(floor, out hit, 100);
+        if(!actionManager.paused) {
+            destination = new Vector3(destination.x, transform.position.y, destination.z);
+            Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
+            Vector3 dir = newPos - transform.position;
+            transform.position = newPos;
+            Ray floor = new Ray(newPos, Vector3.down);
+            Debug.DrawRay(newPos, Vector3.down);
+            Ray collision = new Ray(transform.position, dir.normalized);
+            Debug.DrawRay(newPos, dir.normalized);
+            RaycastHit hit;
+            bool a = Physics.Raycast(collision, 2);
+            bool b = Physics.Raycast(floor, out hit, 100);
         
-        if (!a && b)
-        {
-            transform.position += (hit.point.y - transform.position.y) * Vector3.up;
-            Debug.Log(hit.point);
-        }
-        if (health <= 0 && !debugPreventDeath)
-        {
-            Destroy(this.gameObject);
-        }
-        if (target != null)
-        {
-            Vector3 lookPos = target.transform.position - transform.position;
-            lookPos.y = 0;
-            Quaternion r = Quaternion.LookRotation(lookPos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
+            if (!a && b)
+            {
+                transform.position += (hit.point.y - transform.position.y) * Vector3.up;
+                Debug.Log(hit.point);
+            }
+            if (health <= 0 && !debugPreventDeath)
+            {
+                Destroy(this.gameObject);
+            }
+            if (target != null)
+            {
+                Vector3 lookPos = target.transform.position - transform.position;
+                lookPos.y = 0;
+                Quaternion r = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
             
-            target_stats.health -= CalculateDamage();
+                target_stats.health -= CalculateDamage();
+            }
+            else UpdateTarget();
         }
-        
-        else UpdateTarget();
-
-       
     }
     
     private float CalculateDamage()

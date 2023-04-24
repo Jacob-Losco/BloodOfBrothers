@@ -16,6 +16,7 @@ public class ActionManager : MonoBehaviour
 
     [SerializeField] private Camera _mainCamera;
     
+    public bool paused = false;
 
     private void Awake ()
     {
@@ -31,9 +32,9 @@ public class ActionManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0)) {
             EndSelection();
         }
-        // if(Input.GetKeyDown("space")) {
-        //     StartCoroutine(SetSelectedDestinations());
-        // }
+        if(Input.GetKeyDown("p")) {
+            paused = !paused;
+        }
         if (selection.Count > 0)
         {
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown("space"))
@@ -47,8 +48,8 @@ public class ActionManager : MonoBehaviour
                 Debug.Log("RotationExecuted");
             }
         }
-        
     }
+
     private void executeRotate()
     {
         foreach (Unit unit in selection)
@@ -57,6 +58,7 @@ public class ActionManager : MonoBehaviour
             unit.transform.Rotate(Vector3.up, rotation);
         }
     }
+
     //David
     private void executeMove()
     {
@@ -128,7 +130,6 @@ public class ActionManager : MonoBehaviour
                                 Debug.Log(selection.Count);
                         }
                     }
-
                 }
             }
     
