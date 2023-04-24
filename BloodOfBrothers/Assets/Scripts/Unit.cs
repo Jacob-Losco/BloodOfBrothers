@@ -11,13 +11,17 @@ public class Unit : MonoBehaviour
     public float elivationModifier = 0.1f; //Added to Damage
     public float distanceModifier = 0.1f; // Subtracted from Damage
     public float flankModifier = 0.1f; //Added to Damage, based on angle of attack
-    public float lerpConstant = 0.02f;
     
+    public float lerpConstant = 0.02f;
+    public float rotationSpeed = 4;
+    public float movementSpeed = 1;
+    public float maxMovementSpeed = 10;
+
     public GameObject target;
     public Unit target_stats;
     public List<GameObject> range = new List<GameObject>();
     public Vector3 destination;
-    public float rotationSpeed = 4;
+    public float maxSlope = 5;
 
 
     public bool debugDamage = false;
@@ -25,14 +29,29 @@ public class Unit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        destination = this.transform.position;
+        destination = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = Vector3.Lerp(this.transform.position, destination, lerpConstant);
-
+        destination = new Vector3(destination.x, transform.position.y, destination.z);
+        Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
+        Vector3 dir = newPos - transform.position;
+        transform.position = newPos;
+        Ray floor = new Ray(newPos, Vector3.down);
+        Debug.DrawRay(newPos, Vector3.down);
+        Ray collision = new Ray(transform.position, dir.normalized);
+        Debug.DrawRay(newPos, dir.normalized);
+        RaycastHit hit;
+        bool a = Physics.Raycast(collision, 2);
+        bool b = Physics.Raycast(floor, out hit, 100);
+        
+        if (!a && b)
+        {
+            transform.position += (hit.point.y - transform.position.y) * Vector3.up;
+            Debug.Log(hit.point);
+        }
         if (health <= 0 && !debugPreventDeath)
         {
             Destroy(this.gameObject);
@@ -49,14 +68,8 @@ public class Unit : MonoBehaviour
         
         else UpdateTarget();
 
-        transform.position = Vector3.MoveTowards(transform.position, destination, 2*Time.deltaTime);
+       
     }
-
-    public void SetDestination(Vector3 d)
-    {
-        destination = d + Vector3.up * 0.5f;
-    }
-    
     
     private float CalculateDamage()
     {

@@ -70,7 +70,7 @@ public class ActionManager : MonoBehaviour
                 if (obj.tag == "Terrain")
                 {
                     //Jacob
-                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-5, 5), hit.point.y, hit.point.z + Random.Range(-5, 5));
+                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-3, 3)*(selection.Count-1), hit.point.y, hit.point.z + Random.Range(-3, 3) * (selection.Count - 1));
                     unit.destination = unitDestination;
                 }
                 if (obj.tag == "Unit")
