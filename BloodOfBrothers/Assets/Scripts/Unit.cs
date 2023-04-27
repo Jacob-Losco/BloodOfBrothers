@@ -24,6 +24,11 @@ public class Unit : MonoBehaviour
     public float maxSlope = 5;
     public ActionManager actionManager;
 
+    public BoxCollider LeftCollider;
+    public BoxCollider RightCollider;
+    public bool leftFlank;
+    public bool rightFlank;
+
 
     public bool debugDamage = false;
     public bool debugPreventDeath = false;
