@@ -137,12 +137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f548eb954424ac4a8fa4624df42f661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
   team: 1
-  damage: 2
-  elivationModifier: 0.1
+  numUnits: 20
+  unitHealth: 1
+  staticMaximumAccuracyRange: 0.75
+  movementModifier: 0.1
   distanceModifier: 0.01
   flankModifier: 0.1
+  inCooldown: 0
   lerpConstant: 0.02
   rotationSpeed: 2
   movementSpeed: 20
@@ -152,8 +154,10 @@ MonoBehaviour:
   range: []
   destination: {x: 0, y: 0, z: 0}
   maxSlope: 5
+  actionManager: {fileID: 0}
+  gunSmoke: {fileID: 0}
   debugDamage: 0
-  debugPreventDeath: 1
+  debugPreventDeath: 0
 --- !u!135 &5854592096264305038
 SphereCollider:
   m_ObjectHideFlags: 0

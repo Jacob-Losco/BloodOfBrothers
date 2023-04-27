@@ -6,19 +6,16 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-    // Collects the current selection   
-    private HashSet<Unit> selection = new HashSet<Unit>();
-
-    // Stores the current Coroutine controlling he selection process
-    private Coroutine selectionRoutine;
-
     public LayerMask terrainLayer;
-
-    [SerializeField] private Camera _mainCamera;
-    
     public bool paused = false;
 
-    private void Awake ()
+    [SerializeField] private Camera _mainCamera;
+    // Collects the current selection   
+    private HashSet<Unit> selection = new HashSet<Unit>();
+    // Stores the current Coroutine controlling the selection process
+    private Coroutine selectionRoutine;
+
+    private void Start()
     {
         if(!_mainCamera) _mainCamera = Camera.main;
     }
@@ -40,12 +37,10 @@ public class ActionManager : MonoBehaviour
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown("space"))
             {
                 executeMove();
-                Debug.Log("MoveExecuted");
             }
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetAxis("Mouse ScrollWheel") != 0)
             {
                 executeRotate();
-                Debug.Log("RotationExecuted");
             }
         }
     }
@@ -75,6 +70,7 @@ public class ActionManager : MonoBehaviour
                     Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-3, 3)*(selection.Count-1), hit.point.y, hit.point.z + Random.Range(-3, 3) * (selection.Count - 1));
                     unit.destination = unitDestination;
                 }
+
                 if (obj.tag == "Unit")
                 {
                     Unit enemy = obj.GetComponentInParent<Unit>();
@@ -93,7 +89,6 @@ public class ActionManager : MonoBehaviour
         // if there is already a selection running you don't wanr to start another one
         if(selectionRoutine != null) return;
     
-        Debug.Log("Started");
         selectionRoutine = StartCoroutine (SelectionRoutine ());
     }
     
@@ -102,7 +97,6 @@ public class ActionManager : MonoBehaviour
 
         if(selectionRoutine == null) return;
         StopCoroutine (selectionRoutine);
-        Debug.Log("Ended");
         selectionRoutine = null;
     }
     
@@ -127,7 +121,6 @@ public class ActionManager : MonoBehaviour
                         if (stats != null && !selection.Contains(stats) && stats.team == 1)
                         {
                                 selection.Add(stats);
-                                Debug.Log(selection.Count);
                         }
                     }
                 }
@@ -135,22 +128,6 @@ public class ActionManager : MonoBehaviour
     
             // IMPORTANT: Tells Unity to "pause" here, render this frame and continue from here in the next frame
             yield return null;
-        }
-    }
-
-    private IEnumerator SetSelectedDestinations() {
-        yield return new WaitForSeconds(0);
-
-        var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitInfo;
-
-        if(Physics.Raycast(ray, out hitInfo, 100, terrainLayer)) {
-            Debug.Log(hitInfo.point);
-        }
-
-        foreach (var selectedUnit in selection) {
-            Vector3 unitDestination = new Vector3(hitInfo.point.x + Random.Range(-5, 5), hitInfo.point.y, hitInfo.point.z + Random.Range(-5, 5));
-            selectedUnit.transform.parent.GetComponent<Unit>().destination = unitDestination;
         }
     }
 }
