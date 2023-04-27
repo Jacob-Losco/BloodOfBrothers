@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3371042216970688979, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3371042216970688979, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_LocalPosition.x
@@ -225,8 +225,8 @@ MonoBehaviour:
   terrainLayer:
     serializedVersion: 2
     m_Bits: 8
-  _mainCamera: {fileID: 963194227}
   paused: 0
+  _mainCamera: {fileID: 963194227}
 --- !u!4 &155216375
 Transform:
   m_ObjectHideFlags: 0
@@ -547,7 +547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3371042216970688979, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3371042216970688979, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_LocalPosition.x

@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    public float health = 100;
     public int team = 0;
-    public float damage = 10;
+    public int numUnits = 20;
+    public int unitHealth = 1;
+    public float staticMaximumAccuracyRange = 0.75f;
+    public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
+    public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
+    public float flankModifier = 0.2f; // Added to staticMaximumAccuracyRange when hitting a target angled away from you
 
-    public float elivationModifier = 0.1f; //Added to Damage
-    public float distanceModifier = 0.1f; // Subtracted from Damage
-    public float flankModifier = 0.1f; //Added to Damage, based on angle of attack
+    public bool inCooldown = false;
     
-    public float lerpConstant = 0.02f;
-    public float rotationSpeed = 4;
+    public float lerpConstant = 0.2f;
+    public float rotationSpeed = 10;
     public float movementSpeed = 1;
     public float maxMovementSpeed = 10;
 
@@ -29,14 +31,17 @@ public class Unit : MonoBehaviour
     public bool leftFlank;
     public bool rightFlank;
 
+    public ParticleSystem gunSmoke;
 
     public bool debugDamage = false;
     public bool debugPreventDeath = false;
+
     // Start is called before the first frame update
     void Start()
     {
         destination = transform.position;
         actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
+        gunSmoke = transform.GetChild(1).GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -58,9 +63,8 @@ public class Unit : MonoBehaviour
             if (!a && b)
             {
                 transform.position += (hit.point.y - transform.position.y) * Vector3.up;
-                Debug.Log(hit.point);
             }
-            if (health <= 0 && !debugPreventDeath)
+            if (numUnits <= 0 && !debugPreventDeath)
             {
                 Destroy(this.gameObject);
             }
@@ -71,33 +75,43 @@ public class Unit : MonoBehaviour
                 Quaternion r = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
             
-                target_stats.health -= CalculateDamage();
+                if(!inCooldown) {
+                    inCooldown = true;
+                    StartCoroutine(Cooldown());
+                    target_stats.TakeDamage(CalculateDamage());
+                }
             }
             else UpdateTarget();
         }
     }
     
-    private float CalculateDamage()
+    private int CalculateDamage()
     {
-        Vector3 dist = target.transform.position - transform.position;
-        float modY = Mathf.Max(0, dist.y * elivationModifier);
-        float modDist = Mathf.Max(1, Mathf.Pow(dist.magnitude, 2)* distanceModifier);
-        dist.y = 0;
-        //flank = angle between target.forward and this.forward
-        float flank = 180-Mathf.Abs(Vector3.SignedAngle(transform.forward, target.transform.forward, Vector3.up));
-        float modFlank = flank*flankModifier/10;
-        float mod = (modFlank + modY);
-        float dmg = (damage * mod) / modDist;
-        if (debugDamage)
-        {
-            Debug.Log("Mod:" + mod + " Dist:" + modDist + " Damage:" + dmg);
-        }
-        return dmg;
+        float distance = Mathf.Sqrt(Mathf.Pow(target.transform.position.x - transform.position.x, 2f) 
+        + Mathf.Pow(target.transform.position.y - transform.position.y, 2f) 
+        + Mathf.Pow(target.transform.position.z - transform.position.z, 2f)); //calculate straight line distance from target
+        float totalDistanceDrop = distanceModifier * (distance / 10); //calculate accuracy deduction from distance
+
+        float totalMovementDrop = transform.position == destination ? 0.0f : movementModifier; //calculate accuracy deducation from moving
+
+        float flank = 180-Mathf.Abs(Vector3.SignedAngle(transform.forward, target.transform.forward, Vector3.up)); //calculate angle between this unit front and target front
+        float totalFlankBuff = flank < 90 ? 0.0f : flankModifier; // calculate accuracy increase from flanking
+
+        float maxAccuracyRange = staticMaximumAccuracyRange + totalFlankBuff - totalMovementDrop - totalDistanceDrop < 0 ? 0.0f : staticMaximumAccuracyRange + totalFlankBuff - totalMovementDrop - totalDistanceDrop;
+        maxAccuracyRange = maxAccuracyRange > 100 ? 1.0f : maxAccuracyRange;
+
+        float minAccuracyRange = maxAccuracyRange - 0.25f < 0 ? 0.0f : maxAccuracyRange - 0.25f;
+        minAccuracyRange = minAccuracyRange > 100 ? 1.0f : minAccuracyRange;
+
+        int finalDamage = (int) Mathf.Round(Random.Range(numUnits * minAccuracyRange, numUnits * maxAccuracyRange));
+
+        return finalDamage;
     }
     
     private void AddTarget(GameObject g) { 
         range.Add(g);
     }
+
     private void RemoveTarget(GameObject g)
     {
         if (target == g)
@@ -107,6 +121,7 @@ public class Unit : MonoBehaviour
         }
         else range.Remove(g);
     }
+
     private void UpdateTarget()
     {
         if (range.Count > 0)
@@ -123,24 +138,27 @@ public class Unit : MonoBehaviour
         else
         {
             SetTarget();
-        }
-        
+        } 
     }
+
     public void SetTarget()
     {
         target = null;
         target = null;
     }
+
     public void SetTarget(Unit unit)
     {
         target_stats = unit;
         target = unit.gameObject;
     }
+
     public void SetTarget(GameObject unit)
     {
         target_stats = unit.GetComponent<Unit>();
         target = unit;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         GameObject obj = other.gameObject;
@@ -153,12 +171,22 @@ public class Unit : MonoBehaviour
             }
         }
         catch { }
-
-
     }
+
     private void OnTriggerExit(Collider other)
     {
         GameObject obj = other.gameObject;
         RemoveTarget(obj);
     }
+
+    public void TakeDamage(int damage) {
+        numUnits -= damage / unitHealth;
+        Debug.Log(numUnits);
+    }
+
+    IEnumerator Cooldown() {
+        yield return new WaitForSeconds(5f);
+        inCooldown = false;
+    }
 }
+
