@@ -45,19 +45,19 @@ public class CameraMove : MonoBehaviour
         {
             if (mousePos.y > Screen.height - borderY)
             {
-                this.transform.position += Time.deltaTime * xSpeed * this.transform.up;
+                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y/2) * this.transform.up;
             }
             if (mousePos.y < borderY)
             {
-                this.transform.position -= Time.deltaTime * xSpeed * this.transform.up;
+                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.up;
             }
             if (mousePos.x > Screen.width - borderX)
             {
-                this.transform.position += Time.deltaTime * xSpeed * this.transform.right;
+                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.right;
             }
             if (mousePos.x < borderX)
             {
-                this.transform.position -= Time.deltaTime * xSpeed * this.transform.right;
+                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.right;
             }
         }
     }

@@ -26,10 +26,9 @@ public class Unit : MonoBehaviour
     public float maxSlope = 5;
     public ActionManager actionManager;
 
-    public BoxCollider LeftCollider;
-    public BoxCollider RightCollider;
-    public bool leftFlank;
-    public bool rightFlank;
+
+    public List<GameObject> leftFlank = new List<GameObject>();
+    public List<GameObject> rightFlank = new List<GameObject>();
 
     public ParticleSystem gunSmoke;
 
@@ -47,6 +46,7 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Execute Move
         if(!actionManager.paused) {
             destination = new Vector3(destination.x, transform.position.y, destination.z);
             Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
@@ -108,6 +108,14 @@ public class Unit : MonoBehaviour
         return finalDamage;
     }
     
+    private bool leftExposed() {
+        return leftFlank.Count == 0;
+    }
+    private bool rightExposed()
+    {
+        return rightFlank.Count == 0;
+    }
+
     private void AddTarget(GameObject g) { 
         range.Add(g);
     }
