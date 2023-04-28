@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 5854592096264305038}
   - component: {fileID: 4226191360740127742}
   - component: {fileID: 6922408759747730186}
+  - component: {fileID: 2901694769369956402}
   m_Layer: 2
   m_Name: Infantry
   m_TagString: Infantry
