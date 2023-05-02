@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
@@ -13,7 +16,7 @@ public class Unit : MonoBehaviour
     public float flankModifier = 0.2f; // Added to staticMaximumAccuracyRange when hitting a target angled away from you
 
     public bool inCooldown = false;
-    
+
     public float lerpConstant = 0.2f;
     public float rotationSpeed = 10;
     public float movementSpeed = 1;
@@ -47,9 +50,10 @@ public class Unit : MonoBehaviour
     void Update()
     {
         //Execute Move
-        if(!actionManager.paused) {
+        if (!actionManager.paused)
+        {
             destination = new Vector3(destination.x, transform.position.y, destination.z);
-            Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
+            Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed * lerpConstant * Time.deltaTime);
             Vector3 dir = newPos - transform.position;
             transform.position = newPos;
             Ray floor = new Ray(newPos, Vector3.down);
@@ -59,7 +63,7 @@ public class Unit : MonoBehaviour
             RaycastHit hit;
             bool a = Physics.Raycast(collision, 2);
             bool b = Physics.Raycast(floor, out hit, 100);
-        
+
             if (!a && b)
             {
                 transform.position += (hit.point.y - transform.position.y) * Vector3.up;
@@ -74,29 +78,31 @@ public class Unit : MonoBehaviour
                 lookPos.y = 0;
                 Quaternion r = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
-            
-                if(!inCooldown) {
+
+                if (!inCooldown)
+                {
                     gunSmoke.Play();
                     inCooldown = true;
                     StartCoroutine(Cooldown());
                     StartCoroutine(target_stats.TakeDamage(CalculateDamage()));
+                    target_stats.TakeDamage(CalculateDamage());
                 }
             }
             else UpdateTarget();
         }
 
     }
-    
+
     private int CalculateDamage()
     {
-        float distance = Mathf.Sqrt(Mathf.Pow(target.transform.position.x - transform.position.x, 2f) 
-        + Mathf.Pow(target.transform.position.y - transform.position.y, 2f) 
+        float distance = Mathf.Sqrt(Mathf.Pow(target.transform.position.x - transform.position.x, 2f)
+        + Mathf.Pow(target.transform.position.y - transform.position.y, 2f)
         + Mathf.Pow(target.transform.position.z - transform.position.z, 2f)); //calculate straight line distance from target
         float totalDistanceDrop = distanceModifier * (distance / 10); //calculate accuracy deduction from distance
 
         float totalMovementDrop = transform.position == destination ? 0.0f : movementModifier; //calculate accuracy deducation from moving
 
-        float flank = 180-Mathf.Abs(Vector3.SignedAngle(transform.forward, target.transform.forward, Vector3.up)); //calculate angle between this unit front and target front
+        float flank = 180 - Mathf.Abs(Vector3.SignedAngle(transform.forward, target.transform.forward, Vector3.up)); //calculate angle between this unit front and target front
         float totalFlankBuff = flank < 90 ? 0.0f : flankModifier; // calculate accuracy increase from flanking
 
         float maxAccuracyRange = staticMaximumAccuracyRange + totalFlankBuff - totalMovementDrop - totalDistanceDrop < 0 ? 0.0f : staticMaximumAccuracyRange + totalFlankBuff - totalMovementDrop - totalDistanceDrop;
@@ -105,12 +111,13 @@ public class Unit : MonoBehaviour
         float minAccuracyRange = maxAccuracyRange - 0.25f < 0 ? 0.0f : maxAccuracyRange - 0.25f;
         minAccuracyRange = minAccuracyRange > 100 ? 1.0f : minAccuracyRange;
 
-        int finalDamage = (int) Mathf.Round(Random.Range(numUnits * minAccuracyRange, numUnits * maxAccuracyRange));
+        int finalDamage = (int)Mathf.Round(Random.Range(numUnits * minAccuracyRange, numUnits * maxAccuracyRange));
 
         return finalDamage;
     }
-    
-    private bool leftExposed() {
+
+    private bool leftExposed()
+    {
         return leftFlank.Count == 0;
     }
     private bool rightExposed()
@@ -118,7 +125,8 @@ public class Unit : MonoBehaviour
         return rightFlank.Count == 0;
     }
 
-    private void AddTarget(GameObject g) { 
+    private void AddTarget(GameObject g)
+    {
         range.Add(g);
     }
 
@@ -127,7 +135,7 @@ public class Unit : MonoBehaviour
         if (target == g)
         {
             range.Remove(g);
-            UpdateTarget();   
+            UpdateTarget();
         }
         else range.Remove(g);
     }
@@ -148,7 +156,7 @@ public class Unit : MonoBehaviour
         else
         {
             SetTarget();
-        } 
+        }
     }
 
     public void SetTarget()
@@ -189,20 +197,23 @@ public class Unit : MonoBehaviour
         RemoveTarget(obj);
     }
 
-    IEnumerator TakeDamage(int damage) {
+    IEnumerator TakeDamage(int damage)
+    {
         yield return new WaitForSeconds(0);
 
-        if(!debugDamage) {
+        if (!debugDamage)
+        {
             numUnits -= damage / unitHealth;
-            for(int i = 0; i < damage; i++) {
+            for (int i = 0; i < damage; i++)
+            {
                 Destroy(transform.GetChild(4 + i).gameObject);
             }
         }
     }
 
-    IEnumerator Cooldown() {
+    IEnumerator Cooldown()
+    {
         yield return new WaitForSeconds(5f);
         inCooldown = false;
     }
 }
-
