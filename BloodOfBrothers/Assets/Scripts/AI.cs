@@ -5,27 +5,34 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    public enum AIType { delta, flank, evade, seige, hold }
+    public enum AIType { vector, delta, flank, evade, seige, hold }
     public AIType aiType = AIType.hold;
-    public Unit stats;
+    public float speed = 1;
+    public float actualSpeed = 1;
+    public float lerpConstant = 0.9f;
     public GameObject target;
     public GameObject attacker;
-    public bool auto = true;
     private bool flipX;
     // Start is called before the first frame update
     void Start()
     {
         flipX = GetComponent<SpriteRenderer>().flipX;
-        if (auto)
-        {
-            StartCoroutine(DescisionTree());
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        actualSpeed = Mathf.Lerp(actualSpeed, speed, lerpConstant);
+        Vector2 temp = actualSpeed * ProcessAI() * Time.deltaTime;
+        transform.position += new Vector3(temp.x, temp.y, 0);
+        if (temp.x < -0.5)
+        {
+            GetComponent<SpriteRenderer>().flipX = !flipX;
+        }
+        else if (temp.x > 0.5)
+        {
+            GetComponent<SpriteRenderer>().flipX = flipX;
+        }
     }
 
     Vector3 ProcessAI()
@@ -36,6 +43,9 @@ public class AI : MonoBehaviour
         {
             case AIType.hold:
                 dir = Vector2.zero;
+                break;
+            case AIType.vector:
+                dir = VectorTrack(dir);
                 break;
             case AIType.delta:
                 dir = deltaTrack(dir);
@@ -53,16 +63,6 @@ public class AI : MonoBehaviour
             dir.y = 0;
         return dir;
     }
-    IEnumerator DescisionTree()
-    {
-        yield return new WaitForSeconds(1);
-        if (attacker)
-        {
-
-        }
-        StartCoroutine(DescisionTree());
-    }
-
     private Vector2 VectorTrack(Vector3 rawDirection)
     {
         Vector2 temp = new Vector2(rawDirection.x, rawDirection.y);
@@ -93,6 +93,10 @@ public class AI : MonoBehaviour
             temp.y = -1;
         }
         float dist = rawDirection.magnitude;
+        if (dist < 2)
+            speed *= 2f / 3f;
+        else
+            speed = 5;
         return temp;
     }
     private Vector2 Evade(Vector3 rawDirection)

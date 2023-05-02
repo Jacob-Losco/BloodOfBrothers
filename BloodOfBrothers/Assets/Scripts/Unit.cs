@@ -7,8 +7,6 @@ public class Unit : MonoBehaviour
     public int team = 0;
     public int numUnits = 20;
     public int unitHealth = 1;
-    public float maxFindRange = 20;
-    public float maxAttackRange = 10;
     public float staticMaximumAccuracyRange = 0.75f;
     public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
     public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
@@ -23,8 +21,7 @@ public class Unit : MonoBehaviour
 
     public GameObject target;
     public Unit target_stats;
-    public Unit attacker;
-    public List<GameObject> inRange = new List<GameObject>();
+    public List<GameObject> range = new List<GameObject>();
     public Vector3 destination;
     public float maxSlope = 5;
     public ActionManager actionManager;
@@ -37,10 +34,6 @@ public class Unit : MonoBehaviour
 
     public bool debugDamage = false;
     public bool debugPreventDeath = false;
-
-    public enum AIType {chase, flank, retreat, seige, hold}
-    public AIType mode = AIType.hold;
-    public bool auto = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,81 +48,40 @@ public class Unit : MonoBehaviour
     {
         //Execute Move
         if(!actionManager.paused) {
-
-            if (target == null)
+            destination = new Vector3(destination.x, transform.position.y, destination.z);
+            Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed*lerpConstant * Time.deltaTime);
+            Vector3 dir = newPos - transform.position;
+            transform.position = newPos;
+            Ray floor = new Ray(newPos, Vector3.down);
+            Debug.DrawRay(newPos, Vector3.down);
+            Ray collision = new Ray(transform.position, dir.normalized);
+            Debug.DrawRay(newPos, dir.normalized);
+            RaycastHit hit;
+            bool a = Physics.Raycast(collision, 2);
+            bool b = Physics.Raycast(floor, out hit, 100);
+        
+            if (!a && b)
             {
-                UpdateTarget();
+                transform.position += (hit.point.y - transform.position.y) * Vector3.up;
             }
-
-            switch (mode)
-            {
-                case AIType.hold:
-                    destination = new Vector3(destination.x, transform.position.y, destination.z);
-                    Vector3 newPos = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
-                    Vector3 dir = newPos - transform.position;
-                    Ray floor = new Ray(newPos, Vector3.down * 3);
-                    Ray forward = new Ray(transform.position, dir.normalized);
-                    if (!Physics.Raycast(forward, 1, 2))
-                    {
-                        if (Physics.Raycast(floor, out var hit))
-                        {
-                            transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y -1, newPos.z);
-                        }
-                        else
-                        {
-                            transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
-                        }
-                    }
-                    else
-                    {
-                        destination = transform.position;
-                    }
-                    break;
-                case AIType.chase:
-                    if (target == null)
-                    {
-                        RaycastHit[] hits = Physics.SphereCastAll(origin: transform.position, radius: maxFindRange, direction: Vector3.up, maxDistance: 0);
-                        List<GameObject> targets = new List<GameObject>(); 
-                        foreach (RaycastHit hit in hits)
-                        {
-                            GameObject gameObject = hit.collider.gameObject;
-                            if (gameObject.tag == "Enemy Unit")
-                            {
-                                targets.Add(gameObject);
-                            }
-                        }
-                    }
-                    break;
-                case AIType.retreat:
-                    break;
-                default:
-                    break;
-            }
-
-            
             if (numUnits <= 0 && !debugPreventDeath)
             {
                 Destroy(this.gameObject);
             }
-            
             if (target != null)
             {
                 Vector3 lookPos = target.transform.position - transform.position;
                 lookPos.y = 0;
-                if (lookPos.magnitude < maxAttackRange)
-                {
-                    Quaternion r = Quaternion.LookRotation(lookPos);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
-
-                    if (!inCooldown)
-                    {
-                        inCooldown = true;
-                        StartCoroutine(Cooldown());
-                        target_stats.TakeDamage(CalculateDamage());
-                    }
+                Quaternion r = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
+            
+                if(!inCooldown) {
+                    inCooldown = true;
+                    StartCoroutine(Cooldown());
+                    target_stats.TakeDamage(CalculateDamage());
                 }
             }
-            
+            else UpdateTarget();
         }
     }
     
@@ -165,26 +117,26 @@ public class Unit : MonoBehaviour
     }
 
     private void AddTarget(GameObject g) { 
-        inRange.Add(g);
+        range.Add(g);
     }
 
     private void RemoveTarget(GameObject g)
     {
         if (target == g)
         {
-            inRange.Remove(g);
+            range.Remove(g);
             UpdateTarget();   
         }
-        else inRange.Remove(g);
+        else range.Remove(g);
     }
 
     private void UpdateTarget()
     {
-        if (inRange.Count > 0)
+        if (range.Count > 0)
         {
             try
             {
-                SetTarget(inRange[Random.Range(0, inRange.Count)]);
+                SetTarget(range[Random.Range(0, range.Count)]);
             }
             catch
             {
@@ -207,14 +159,12 @@ public class Unit : MonoBehaviour
     {
         target_stats = unit;
         target = unit.gameObject;
-        target_stats.attacker = this.GetComponent<Unit>();
     }
 
     public void SetTarget(GameObject unit)
     {
         target_stats = unit.GetComponent<Unit>();
         target = unit;
-        target_stats.attacker = this.GetComponent<Unit>();
     }
 
     private void OnTriggerEnter(Collider other)
