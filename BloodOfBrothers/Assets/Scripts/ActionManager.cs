@@ -19,6 +19,7 @@ public class ActionManager : MonoBehaviour
     {
         if(!_mainCamera) _mainCamera = Camera.main;
     }
+    Stack<Vector3> directions = new Stack<Vector3>();
 
     // Depending on how exactly you want to start and stop the selection     
     private void Update()
@@ -64,21 +65,24 @@ public class ActionManager : MonoBehaviour
             GameObject obj = hit.collider.gameObject;
             foreach (Unit unit in selection)
             {
-                if (obj.tag == "Terrain")
-                {
-                    //Jacob
-                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-3, 3)*(selection.Count-1), hit.point.y, hit.point.z + Random.Range(-3, 3) * (selection.Count - 1));
-                    unit.destination = unitDestination;
-                }
 
-                if (obj.tag == "Unit")
+                if (obj.tag == "Enemy Unit")
                 {
                     Unit enemy = obj.GetComponentInParent<Unit>();
-                    if (enemy != null && !selection.Contains(enemy) && enemy.team != 1)
+                    if (enemy != null && !selection.Contains(enemy))
                     {
                         unit.target_stats = enemy;
                         unit.target = enemy.gameObject;
                     }
+                } else if (obj.tag == "Unit")
+                {
+                    Unit stats = obj.GetComponentInParent<Unit>();
+                    selection.Add(stats);
+                } else
+                {
+                    float scale = unit.transform.localScale.x;
+                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-scale, scale) * (selection.Count - 1), hit.point.y, hit.point.z + Random.Range(-scale, scale) * (selection.Count - 1));
+                    unit.destination = unitDestination;
                 }
             }
         }

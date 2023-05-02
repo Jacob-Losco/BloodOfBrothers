@@ -7,9 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 888727398040210243, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Unit
+      objectReference: {fileID: 0}
     - target: {fileID: 2650222595008775694, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_Name
       value: Infantry Team1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2650222595008775694, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Infantry
       objectReference: {fileID: 0}
     - target: {fileID: 3371042216970688979, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_RootOrder
@@ -62,6 +70,10 @@ PrefabInstance:
     - target: {fileID: 7707165218771806368, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: team
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8508138940308615778, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: auto
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8585584001902918815, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_Materials.Array.data[0]
