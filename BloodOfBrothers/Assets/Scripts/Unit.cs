@@ -84,6 +84,7 @@ public class Unit : MonoBehaviour
             }
             else UpdateTarget();
         }
+
     }
     
     private int CalculateDamage()
@@ -192,13 +193,10 @@ public class Unit : MonoBehaviour
         yield return new WaitForSeconds(0);
 
         if(!debugDamage) {
-            Debug.Log("---------- " + damage);
             numUnits -= damage / unitHealth;
             for(int i = 0; i < damage; i++) {
-                Debug.Log(transform.GetChild(4).gameObject);
-                Destroy(transform.GetChild(4).gameObject);
+                Destroy(transform.GetChild(4 + i).gameObject);
             }
-            debugDamage = true;
         }
     }
 
