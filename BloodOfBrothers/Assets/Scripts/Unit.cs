@@ -76,9 +76,10 @@ public class Unit : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
             
                 if(!inCooldown) {
+                    gunSmoke.Play();
                     inCooldown = true;
                     StartCoroutine(Cooldown());
-                    target_stats.TakeDamage(CalculateDamage());
+                    StartCoroutine(target_stats.TakeDamage(CalculateDamage()));
                 }
             }
             else UpdateTarget();
@@ -187,9 +188,18 @@ public class Unit : MonoBehaviour
         RemoveTarget(obj);
     }
 
-    public void TakeDamage(int damage) {
-        numUnits -= damage / unitHealth;
-        Debug.Log(numUnits);
+    IEnumerator TakeDamage(int damage) {
+        yield return new WaitForSeconds(0);
+
+        if(!debugDamage) {
+            Debug.Log("---------- " + damage);
+            numUnits -= damage / unitHealth;
+            for(int i = 0; i < damage; i++) {
+                Debug.Log(transform.GetChild(4).gameObject);
+                Destroy(transform.GetChild(4).gameObject);
+            }
+            debugDamage = true;
+        }
     }
 
     IEnumerator Cooldown() {
