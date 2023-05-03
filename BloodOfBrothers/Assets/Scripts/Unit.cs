@@ -8,8 +8,10 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public int team = 0;
+    public int unitType = 0; //0 = infantry, 1 = cavalry, 2 = artillery
     public int numUnits = 20;
     public int unitHealth = 1;
+    public int unitDamage = 1;
     public float staticMaximumAccuracyRange = 0.75f;
     public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
     public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
