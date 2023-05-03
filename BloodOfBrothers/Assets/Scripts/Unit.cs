@@ -65,7 +65,7 @@ public class Unit : MonoBehaviour
             Debug.DrawRay(newPos, Vector3.down);
             Ray collision = new Ray(transform.position, dir.normalized);
             Debug.DrawRay(newPos, dir.normalized);
-            RaycastHit hit;
+            RaycastHit hit; 
             bool a = Physics.Raycast(collision, 2);
             bool b = Physics.Raycast(floor, out hit, 100);
 
