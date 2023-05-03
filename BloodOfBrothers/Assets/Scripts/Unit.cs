@@ -16,6 +16,8 @@ public class Unit : MonoBehaviour
     public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
     public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
     public float flankModifier = 0.2f; // Added to staticMaximumAccuracyRange when hitting a target angled away from you
+    public enum AIType {hold, persue,  };
+    public AIType mode = AIType.hold;
 
     public bool inCooldown = false;
 
@@ -54,6 +56,7 @@ public class Unit : MonoBehaviour
         //Execute Move
         if (!actionManager.paused)
         {
+            
             destination = new Vector3(destination.x, transform.position.y, destination.z);
             Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed * lerpConstant * Time.deltaTime);
             Vector3 dir = newPos - transform.position;
@@ -116,7 +119,10 @@ public class Unit : MonoBehaviour
 
         return finalDamage;
     }
-
+    public bool isMoving()
+    {
+        return (destination - transform.position).magnitude > 1;
+    }
     private bool leftExposed()
     {
         return leftFlank.Count == 0;
