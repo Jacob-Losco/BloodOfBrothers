@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c18b5125148961947a68f0704bb69f5b, type: 2}
+    - target: {fileID: 5532959207188033634, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7230362306148844493, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -73,3 +77,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+--- !u!1 &4412704707017591759 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1543352404688794558, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+  m_PrefabInstance: {fileID: 2906516489135863921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &3283449523665410180
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4412704707017591759}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 9
+  m_Center: {x: 0, y: 0, z: 0}

@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f548eb954424ac4a8fa4624df42f661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team: 1
   unitType: 2
   numUnits: 5
   unitHealth: 5
@@ -129,6 +129,7 @@ MonoBehaviour:
   movementModifier: 1
   distanceModifier: 0.01
   flankModifier: 0.5
+  mode: 0
   inCooldown: 0
   lerpConstant: 0.2
   rotationSpeed: 10
