@@ -85,7 +85,6 @@ public class Unit : MonoBehaviour
                     inCooldown = true;
                     StartCoroutine(Cooldown());
                     StartCoroutine(target_stats.TakeDamage(CalculateDamage()));
-                    target_stats.TakeDamage(CalculateDamage());
                 }
             }
             else UpdateTarget();

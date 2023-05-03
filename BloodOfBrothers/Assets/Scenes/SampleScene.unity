@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 273021931206496612, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273021931206496612, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 2650222595008775694, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_Name
       value: Infantry (1)
@@ -178,7 +186,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.995
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7707165218771806368, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: rotationSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 273021931206496612, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
 --- !u!1 &155216373
 GameObject:
