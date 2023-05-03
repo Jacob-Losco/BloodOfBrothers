@@ -12,11 +12,12 @@ public class Unit : MonoBehaviour
     public int numUnits = 20;
     public int unitHealth = 1;
     public int unitDamage = 1;
+    public float maxFindRange = 10;
     public float staticMaximumAccuracyRange = 0.75f;
     public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
     public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
     public float flankModifier = 0.2f; // Added to staticMaximumAccuracyRange when hitting a target angled away from you
-    public enum AIType {hold, persue,  };
+    public enum AIType {hold, engage, charge, retreat, seige};
     public AIType mode = AIType.hold;
 
     public bool inCooldown = false;
@@ -32,8 +33,6 @@ public class Unit : MonoBehaviour
     public Vector3 destination;
     public float maxSlope = 5;
     public ActionManager actionManager;
-
-
     public List<GameObject> leftFlank = new List<GameObject>();
     public List<GameObject> rightFlank = new List<GameObject>();
 
@@ -56,24 +55,53 @@ public class Unit : MonoBehaviour
         //Execute Move
         if (!actionManager.paused)
         {
-            
-            destination = new Vector3(destination.x, transform.position.y, destination.z);
-            Vector3 newPos = Vector3.Lerp(transform.position, destination, movementSpeed * lerpConstant * Time.deltaTime);
-            Vector3 dir = newPos - transform.position;
-            transform.position = newPos;
-            Ray floor = new Ray(newPos, Vector3.down);
-            Debug.DrawRay(newPos, Vector3.down);
-            Ray collision = new Ray(transform.position, dir.normalized);
-            Debug.DrawRay(newPos, dir.normalized);
-            RaycastHit hit; 
-            bool a = Physics.Raycast(collision, 2);
-            bool b = Physics.Raycast(floor, out hit, 100);
 
-            if (!a && b)
+            switch (mode)
             {
-                transform.position += (hit.point.y - transform.position.y) * Vector3.up;
-            }
-            if (numUnits <= 0 && !debugPreventDeath)
+                case AIType.hold:
+                    destination = new Vector3(destination.x, transform.position.y, destination.z);
+                    Vector3 newPos = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
+                    Vector3 dir = newPos - transform.position;
+                    Ray floor = new Ray(newPos, Vector3.down * 3);
+                    Ray forward = new Ray(transform.position, dir.normalized);
+                    if (!Physics.Raycast(forward, 1, 2))
+                    {
+                        if (Physics.Raycast(floor, out var hit))
+                        {
+                            transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 1, newPos.z);
+                        }
+                        else
+                        {
+                            transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+                        }
+                    }
+                    else
+                    {
+                        destination = transform.position;
+                    }
+                    break;
+                case AIType.engage:
+                    if (target == null)
+                        {
+                        RaycastHit[] hits = Physics.SphereCastAll(origin: transform.position, radius: maxFindRange, direction: Vector3.up, maxDistance: 0);
+                        List<GameObject> targets = new List<GameObject>();
+                        foreach (RaycastHit hit in hits)
+                        {
+                            GameObject gameObject = hit.collider.gameObject;
+                            if (gameObject.tag == "Enemy Unit")
+                            {
+                                targets.Add(gameObject);
+                            }
+                        }
+                    }
+                    break;
+                case AIType.retreat:
+                    break;
+                default:
+                    break;
+                }
+
+        if (numUnits <= 0 && !debugPreventDeath)
             {
                 Destroy(this.gameObject);
             }
