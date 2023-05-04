@@ -48,12 +48,15 @@ public class Unit : MonoBehaviour
     public bool debugDamage = false;
     public bool debugPreventDeath = false;
 
+    public GameManager manager;
+
     // Start is called before the first frame update
     void Start()
     {
         destination = transform.position;
         actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
         gunSmoke = transform.GetChild(1).GetComponentInChildren<ParticleSystem>();
+        manager.totalFriendlyUnits += numUnits;
     }
 
     // Update is called once per frame
