@@ -176,10 +176,17 @@ Animator:
   m_GameObject: {fileID: 111614}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f4209d51d1ad0434299f2d498ee076ba, type: 3}
+<<<<<<< Updated upstream:BloodOfBrothers/Assets/Imported Assets/ToonSoldiers_WW2_demo/ToonSoldier_WW2_demo_model.prefab
   m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
+=======
+  m_Controller: {fileID: 9100000, guid: 18b0500d00ff27643aa3301dfcd6c944, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+>>>>>>> Stashed changes:BloodOfBrothers/Assets/ToonSoldiers_WW2_demo/ToonSoldier_WW2_demo_model.prefab
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -458,7 +465,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+<<<<<<< Updated upstream:BloodOfBrothers/Assets/Imported Assets/ToonSoldiers_WW2_demo/ToonSoldier_WW2_demo_model.prefab
   m_RenderingLayerMask: 1
+=======
+  m_RenderingLayerMask: 257
+>>>>>>> Stashed changes:BloodOfBrothers/Assets/ToonSoldiers_WW2_demo/ToonSoldier_WW2_demo_model.prefab
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 1dcd4ea457239f049875b7a7c8f9509e, type: 2}
