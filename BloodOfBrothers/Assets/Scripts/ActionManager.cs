@@ -76,7 +76,7 @@ public class ActionManager : MonoBehaviour
                     Unit enemy = obj.GetComponentInParent<Unit>();
                     if (enemy != null && !selection.Contains(enemy) && enemy.team != 1)
                     {
-                        unit.target_stats = enemy;
+                        unit.enemy = enemy;
                         unit.target = enemy.gameObject;
                     }
                 }

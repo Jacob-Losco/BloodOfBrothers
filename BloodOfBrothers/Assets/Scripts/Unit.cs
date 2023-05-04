@@ -12,14 +12,18 @@ public class Unit : MonoBehaviour
     public int numUnits = 20;
     public int unitHealth = 1;
     public int unitDamage = 1;
+    
     public float maxFindRange = 10;
+    public float maxAttackRange = 5;
+    public float optimalAttackRange = 4; //Determines how close AI will path to attack
+    
     public float staticMaximumAccuracyRange = 0.75f;
     public float movementModifier = 0.10f; // Subtracted from staticMaximumAccuracyRange when moving
     public float distanceModifier = 0.05f; // Subtracted from staticMaximumAccuracyRange for every 10 units distance from target
     public float flankModifier = 0.2f; // Added to staticMaximumAccuracyRange when hitting a target angled away from you
-    public enum AIType {hold, engage, charge, retreat, seige};
+    public enum AIType {hold, engage, flank, charge, retreat, seige};
     public AIType mode = AIType.hold;
-
+    
     public bool inCooldown = false;
 
     public float lerpConstant = 0.2f;
@@ -28,13 +32,16 @@ public class Unit : MonoBehaviour
     public float maxMovementSpeed = 10;
 
     public GameObject target;
-    public Unit target_stats;
-    public List<GameObject> range = new List<GameObject>();
+    public Unit enemy;
+    public List<GameObject> targets = new List<GameObject>();
+    
     public Vector3 destination;
     public float maxSlope = 5;
+
     public ActionManager actionManager;
-    public List<GameObject> leftFlank = new List<GameObject>();
-    public List<GameObject> rightFlank = new List<GameObject>();
+    
+    public List<GameObject> leftFlankDefenders = new List<GameObject>();
+    public List<GameObject> rightFlankDefenders = new List<GameObject>();
 
     public ParticleSystem gunSmoke;
 
@@ -55,47 +62,104 @@ public class Unit : MonoBehaviour
         //Execute Move
         if (!actionManager.paused)
         {
-
+            destination = new Vector3(destination.x, transform.position.y, destination.z);
+            Vector3 newPos = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
+            Vector3 dir = newPos - transform.position;
+            Ray floor = new Ray(newPos, Vector3.down * 3);
+            Ray forward = new Ray(transform.position, dir.normalized);
+            if (!Physics.Raycast(forward, 1, 2))
+            {
+                if (Physics.Raycast(floor, out var hit))
+                {
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 1, newPos.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+                }
+            }
+            else
+            {
+                destination = transform.position;
+            }
+            RaycastHit[] hits;
             switch (mode)
             {
                 case AIType.hold:
-                    destination = new Vector3(destination.x, transform.position.y, destination.z);
-                    Vector3 newPos = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
-                    Vector3 dir = newPos - transform.position;
-                    Ray floor = new Ray(newPos, Vector3.down * 3);
-                    Ray forward = new Ray(transform.position, dir.normalized);
-                    if (!Physics.Raycast(forward, 1, 2))
+                    //hold position or follow orders to destination
+                    break;
+                case AIType.engage:
+                    if (!isMoving() && target != null)
                     {
-                        if (Physics.Raycast(floor, out var hit))
+                        if (enemy.target == this.gameObject)
                         {
-                            transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 1, newPos.z);
+                            destination = (transform.position - target.transform.position).normalized * enemy.optimalAttackRange;
+
+                        }// else (is distracted), flank
+                        else if (enemy.rightExposed() || enemy.leftExposed())
+                        {
+                            mode = AIType.flank;
                         }
                         else
                         {
-                            transform.position = new Vector3(newPos.x, transform.position.y, newPos.z);
+                            //hold
                         }
+                    }
+                    break;
+                case AIType.flank:
+                    if (target == null || enemy.target == this.gameObject)
+                    {
+                        destination = this.transform.position;
+                        mode = AIType.engage;
                     }
                     else
                     {
-                        destination = transform.position;
-                    }
-                    break;
-                case AIType.engage:
-                    if (target == null)
+                        if (enemy.rightExposed())
                         {
-                        RaycastHit[] hits = Physics.SphereCastAll(origin: transform.position, radius: maxFindRange, direction: Vector3.up, maxDistance: 0);
-                        List<GameObject> targets = new List<GameObject>();
-                        foreach (RaycastHit hit in hits)
-                        {
-                            GameObject gameObject = hit.collider.gameObject;
-                            if (gameObject.tag == "Enemy Unit")
+                            if (enemy.leftExposed())
                             {
-                                targets.Add(gameObject);
+                                //pick random
+                                if (Random.Range(0, 2) == 0)
+                                {
+                                    //right
+                                    destination = target.transform.position + target.transform.right * optimalAttackRange;
+
+                                }
+                                else
+                                {
+                                    //left
+                                    destination = target.transform.position - target.transform.right * optimalAttackRange;
+                                }
                             }
                         }
+                        else if (enemy.leftExposed())
+                        {
+                            //left
+                            destination = target.transform.position - target.transform.right * optimalAttackRange;
+                        }
+                        else
+                        {
+                            mode = AIType.engage;
+                        }
                     }
+
                     break;
                 case AIType.retreat:
+                    hits = Physics.SphereCastAll(origin: transform.position, radius: maxFindRange, direction: Vector3.up, maxDistance: 0);
+                    int count = 0;
+                    Vector3 fleaToward = Vector3.zero;
+                    foreach (RaycastHit hit in hits)
+                    {
+                        GameObject gameObject = hit.collider.gameObject;
+                        if (gameObject.tag == "Enemy Unit")
+                        {
+                            fleaToward += (transform.position - target.transform.position);
+                            count++;
+                        }
+                    }
+                    destination = transform.position + fleaToward;
+                    break;
+                case AIType.seige:
                     break;
                 default:
                     break;
@@ -112,12 +176,12 @@ public class Unit : MonoBehaviour
                 Quaternion r = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
 
-                if (!inCooldown)
+                if (!inCooldown && lookPos.magnitude < maxAttackRange)
                 {
                     gunSmoke.Play();
                     inCooldown = true;
                     StartCoroutine(Cooldown());
-                    StartCoroutine(target_stats.TakeDamage(CalculateDamage()));
+                    StartCoroutine(enemy.TakeDamage(CalculateDamage()));
                 }
             }
             else UpdateTarget();
@@ -151,37 +215,37 @@ public class Unit : MonoBehaviour
     {
         return (destination - transform.position).magnitude > 1;
     }
-    private bool leftExposed()
+    public bool leftExposed()
     {
-        return leftFlank.Count == 0;
+        return leftFlankDefenders.Count == 0;
     }
-    private bool rightExposed()
+    public bool rightExposed()
     {
-        return rightFlank.Count == 0;
+        return rightFlankDefenders.Count == 0;
     }
 
-    private void AddTarget(GameObject g)
+    public void AddTarget(GameObject g)
     {
-        range.Add(g);
+        targets.Add(g);
     }
 
     private void RemoveTarget(GameObject g)
     {
         if (target == g)
         {
-            range.Remove(g);
+            targets.Remove(g);
             UpdateTarget();
         }
-        else range.Remove(g);
+        else targets.Remove(g);
     }
 
     private void UpdateTarget()
     {
-        if (range.Count > 0)
+        if (targets.Count > 0)
         {
             try
             {
-                SetTarget(range[Random.Range(0, range.Count)]);
+                SetTarget(targets[Random.Range(0, targets.Count)]);
             }
             catch
             {
@@ -202,13 +266,13 @@ public class Unit : MonoBehaviour
 
     public void SetTarget(Unit unit)
     {
-        target_stats = unit;
+        enemy = unit;
         target = unit.gameObject;
     }
 
     public void SetTarget(GameObject unit)
     {
-        target_stats = unit.GetComponent<Unit>();
+        enemy = unit.GetComponent<Unit>();
         target = unit;
     }
 

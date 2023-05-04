@@ -14,11 +14,11 @@ public class UnitFlankManager : MonoBehaviour
     {
         if (right)
         {
-            return unit.rightFlank;
+            return unit.rightFlankDefenders;
         }
         else
         {
-            return unit.leftFlank;
+            return unit.leftFlankDefenders;
         }
     }
 
