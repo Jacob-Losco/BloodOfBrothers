@@ -61,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c18b5125148961947a68f0704bb69f5b, type: 2}
     - target: {fileID: 1688263726289685444, guid: 9f7ab204045fc4203a5919cd2a137d53, type: 3}
       propertyPath: m_Name
-      value: Cavalry Team1
+      value: Cavalry Con
       objectReference: {fileID: 0}
     - target: {fileID: 4352672192025959308, guid: 9f7ab204045fc4203a5919cd2a137d53, type: 3}
       propertyPath: m_LocalPosition.z

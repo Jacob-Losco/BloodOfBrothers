@@ -8,8 +8,12 @@ public class CameraMove : MonoBehaviour
     public float maxHeight = 200;
     public float ySpeed = 200;
     public float xSpeed = 20;
+    public float rotationSpeed = 50;
     public float borderRatio = 0.3f;
     public bool mouseLock = true;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,15 +23,19 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Mouse4))
+        {
+            this.transform.Rotate(Input.GetAxis("Mouse ScrollWheel") * rotationSpeed * Vector3.up, Space.World);
+        }
+        else
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && this.transform.position.y > minHeight)
             {
-                this.transform.position += Time.deltaTime * ySpeed * Vector3.down;
+                this.transform.position += Time.deltaTime * ySpeed * transform.forward;
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0 && this.transform.position.y < maxHeight)
             {
-                this.transform.position += Time.deltaTime * ySpeed * Vector3.up;
+                this.transform.position += Time.deltaTime * ySpeed * -transform.forward;
             }
         }
         Vector3 mousePos = Input.mousePosition;
@@ -45,19 +53,19 @@ public class CameraMove : MonoBehaviour
         {
             if (mousePos.y > Screen.height - borderY)
             {
-                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y/2) * this.transform.up;
+                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             }
             if (mousePos.y < borderY)
             {
-                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.up;
+                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
             }
             if (mousePos.x > Screen.width - borderX)
             {
-                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.right;
+                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y / 2) * new Vector3(transform.right.x, 0, transform.right.z).normalized;
             }
             if (mousePos.x < borderX)
             {
-                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y / 2) * this.transform.right;
+                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y / 2) * new Vector3(transform.right.x, 0, transform.right.z).normalized;
             }
         }
     }

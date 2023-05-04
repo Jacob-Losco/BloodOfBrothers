@@ -29,19 +29,16 @@ public class ActionManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0)) {
             EndSelection();
         }
-        if(Input.GetKeyDown("p")) {
+        if(Input.GetKeyDown(KeyCode.Return)) {
             paused = !paused;
         }
         if (selection.Count > 0)
         {
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown("space"))
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
             {
                 executeMove();
             }
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetAxis("Mouse ScrollWheel") != 0)
-            {
-                executeRotate();
-            }
+            
         }
     }
 

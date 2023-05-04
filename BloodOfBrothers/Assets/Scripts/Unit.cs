@@ -43,7 +43,7 @@ public class Unit : MonoBehaviour
     public List<GameObject> leftFlankDefenders = new List<GameObject>();
     public List<GameObject> rightFlankDefenders = new List<GameObject>();
 
-    public ParticleSystem gunSmoke;
+    public GameObject gunSmoke;
 
     public bool debugDamage = false;
     public bool debugPreventDeath = false;
@@ -55,8 +55,8 @@ public class Unit : MonoBehaviour
     {
         destination = transform.position;
         actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
-        gunSmoke = transform.GetChild(1).GetComponentInChildren<ParticleSystem>();
         manager.totalFriendlyUnits += numUnits;
+        StartCoroutine(Cooldown());
     }
 
     // Update is called once per frame
@@ -125,20 +125,20 @@ public class Unit : MonoBehaviour
                                 if (Random.Range(0, 2) == 0)
                                 {
                                     //right
-                                    destination = target.transform.position + target.transform.right * optimalAttackRange;
+                                    destination = (target.transform.position - target.transform.right).normalized * optimalAttackRange;
 
                                 }
                                 else
                                 {
                                     //left
-                                    destination = target.transform.position - target.transform.right * optimalAttackRange;
+                                    destination = (target.transform.position + target.transform.right).normalized * optimalAttackRange;
                                 }
                             }
                         }
                         else if (enemy.leftExposed())
                         {
                             //left
-                            destination = target.transform.position - target.transform.right * optimalAttackRange;
+                            destination = target.transform.position + target.transform.right * optimalAttackRange;
                         }
                         else
                         {
@@ -168,7 +168,7 @@ public class Unit : MonoBehaviour
                     break;
                 }
 
-        if (numUnits <= 0 && !debugPreventDeath)
+            if (numUnits <= 0 && !debugPreventDeath)
             {
                 Destroy(this.gameObject);
             }
@@ -181,8 +181,8 @@ public class Unit : MonoBehaviour
 
                 if (!inCooldown && lookPos.magnitude < maxAttackRange)
                 {
-                    gunSmoke.Play();
-                    inCooldown = true;
+                    GameObject smoke = Instantiate(gunSmoke, null);
+                    smoke.transform.SetPositionAndRotation(transform.position, transform.rotation);
                     StartCoroutine(Cooldown());
                     StartCoroutine(enemy.TakeDamage(CalculateDamage()));
                 }
@@ -315,6 +315,7 @@ public class Unit : MonoBehaviour
 
     IEnumerator Cooldown()
     {
+        inCooldown = true;
         yield return new WaitForSeconds(5f);
         inCooldown = false;
     }
