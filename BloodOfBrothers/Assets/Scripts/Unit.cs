@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
@@ -55,7 +52,6 @@ public class Unit : MonoBehaviour
     {
         destination = transform.position;
         actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
-        manager.totalFriendlyUnits += numUnits;
         StartCoroutine(Cooldown());
     }
 
