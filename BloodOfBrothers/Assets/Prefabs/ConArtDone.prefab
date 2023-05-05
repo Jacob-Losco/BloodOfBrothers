@@ -9,11 +9,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1543352404688794558, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_Name
-      value: ConArtDone
+      value: Artillery Con (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1543352404688794558, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Infantry
+      objectReference: {fileID: 0}
+    - target: {fileID: 2043595525150142780, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2043595525150142780, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: team
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3152476502306353441, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 520cec4b0a47f1d4fa1ad58cb4660edc, type: 3}
+    - target: {fileID: 4320727421076665391, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Unit
       objectReference: {fileID: 0}
     - target: {fileID: 5169139462312396197, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -37,15 +53,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7230362306148844493, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 504.13586
+      value: 836
       objectReference: {fileID: 0}
     - target: {fileID: 7230362306148844493, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 60.934067
+      value: 79
       objectReference: {fileID: 0}
     - target: {fileID: 7230362306148844493, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.169918
+      value: 733
       objectReference: {fileID: 0}
     - target: {fileID: 7230362306148844493, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -87,14 +103,15 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3062605052581008571, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
 --- !u!1 &4356945797942939826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1543352404688794558, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
   m_PrefabInstance: {fileID: 2962785587167060748}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &7558496336595182736
+--- !u!135 &8962898991149402185
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,5 +122,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 9
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
