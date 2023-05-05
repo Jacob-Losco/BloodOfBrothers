@@ -70,10 +70,10 @@ public class ActionManager : MonoBehaviour
                     unit.destination = unitDestination;
                 }
 
-                if (obj.tag == "Unit")
+                if (obj.tag == "Enemy Unit")
                 {
                     Unit enemy = obj.GetComponentInParent<Unit>();
-                    if (enemy != null && !selection.Contains(enemy) && enemy.team != 1)
+                    if (enemy != null && !selection.Contains(enemy) && enemy.team != unit.team)
                     {
                         unit.enemy = enemy;
                         unit.target = enemy.gameObject;

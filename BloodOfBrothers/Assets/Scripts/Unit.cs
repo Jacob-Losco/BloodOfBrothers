@@ -5,10 +5,11 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public int team = 0;
-    public int unitType = 0; //0 = infantry, 1 = cavalry, 2 = artillery
+    public enum UnitType {infantry, calvary, artillery}; //0 = infantry, 1 = cavalry, 2 = artillery
+    public UnitType unitType = UnitType.infantry;
     public int numUnits = 20;
     public int unitHealth = 1;
-    public int unitDamage = 1;
+    public float unitDamage = 1;
     
     public float maxFindRange = 10;
     public float maxAttackRange = 5;
@@ -47,12 +48,15 @@ public class Unit : MonoBehaviour
 
     public GameManager manager;
 
+    AudioSource fx;
+
     // Start is called before the first frame update
     void Start()
     {
         destination = transform.position;
         actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
         StartCoroutine(Cooldown());
+        fx = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -92,7 +96,7 @@ public class Unit : MonoBehaviour
                     {
                         if (enemy.target == this.gameObject)
                         {
-                            destination = (transform.position - target.transform.position).normalized * enemy.optimalAttackRange;
+                            destination = target.transform.position + (transform.position - target.transform.position).normalized * optimalAttackRange;
 
                         }// else (is distracted), flank
                         else if (enemy.rightExposed() || enemy.leftExposed())
@@ -121,20 +125,20 @@ public class Unit : MonoBehaviour
                                 if (Random.Range(0, 2) == 0)
                                 {
                                     //right
-                                    destination = (target.transform.position - target.transform.right).normalized * optimalAttackRange;
+                                    destination = target.transform.position + target.transform.right * optimalAttackRange;
 
                                 }
                                 else
                                 {
                                     //left
-                                    destination = (target.transform.position + target.transform.right).normalized * optimalAttackRange;
+                                    destination = target.transform.position - target.transform.right * optimalAttackRange;
                                 }
                             }
                         }
                         else if (enemy.leftExposed())
                         {
                             //left
-                            destination = target.transform.position + target.transform.right * optimalAttackRange;
+                            destination = target.transform.position - target.transform.right * optimalAttackRange;
                         }
                         else
                         {
@@ -177,9 +181,10 @@ public class Unit : MonoBehaviour
                 lookPos.y = 0;
                 Quaternion r = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, r, Time.deltaTime * rotationSpeed);
-
-                if (!inCooldown && lookPos.magnitude < maxAttackRange)
+                
+                if (!inCooldown && lookPos.magnitude < maxAttackRange && Mathf.Abs(Vector3.SignedAngle(lookPos, transform.forward, Vector3.up)) < 45)
                 {
+                    fx.PlayOneShot(fx.clip);
                     GameObject smoke = Instantiate(gunSmoke, null);
                     smoke.transform.SetPositionAndRotation(transform.position, transform.rotation);
                     StartCoroutine(Cooldown());
@@ -266,17 +271,23 @@ public class Unit : MonoBehaviour
         target = null;
     }
 
+    public void SetTarget(GameObject unit)
+    {
+        SetTarget(unit.GetComponent<Unit>());
+    }
+
     public void SetTarget(Unit unit)
     {
         enemy = unit;
         target = unit.gameObject;
+        if (enemy.target == null || (enemy.target.transform.position - enemy.transform.position).magnitude > (transform.position - enemy.transform.position).magnitude)
+        {
+            enemy.SetTarget(this);
+        }
+
     }
 
-    public void SetTarget(GameObject unit)
-    {
-        enemy = unit.GetComponent<Unit>();
-        target = unit;
-    }
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -304,11 +315,9 @@ public class Unit : MonoBehaviour
 
         if (!debugDamage)
         {
-            numUnits -= damage / unitHealth;
-            for (int i = 0; i < damage; i++)
-            {
-                Destroy(transform.GetChild(4 + i).gameObject);
-            }
+            int init_health = numUnits;
+            numUnits -= Mathf.Max(damage / unitHealth, 1);
+            Destroy(transform.GetChild(3).GetChild(0).gameObject);
         }
     }
 
