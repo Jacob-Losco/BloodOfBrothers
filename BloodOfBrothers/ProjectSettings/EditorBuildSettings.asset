@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/terrain.unity
+    guid: aff90863c58ba7c4fa17e9b5a3149bee
+  - enabled: 1
+    path: Assets/Scenes/End Enemy.unity
+    guid: db15624128f451841b0ab9893b766e76
+  - enabled: 1
+    path: Assets/Scenes/End Friendly.unity
+    guid: 4d9d1c7f5e294d04cadc0edbdb3e2e01
   m_configObjects: {}

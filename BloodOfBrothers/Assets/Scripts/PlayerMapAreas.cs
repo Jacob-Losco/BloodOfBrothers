@@ -10,7 +10,7 @@ public class PlayerMapAreas : MonoBehaviour
         CapturedAlly,
         CapturedEnemy
     }
-
+    public int control = 0;
     private List<MapAreaCollider> mapAreaColliderList;
     private State state;
     private float progress;
@@ -38,7 +38,7 @@ public class PlayerMapAreas : MonoBehaviour
             case State.Neutreal:
                 int playerCountInsideMapArea = 0;
                 int enemyCountInsideMapArea = 0;
-                int control = 0;
+                
                 foreach (MapAreaCollider mapAreaCollider in mapAreaColliderList)
                 {
                     playerCountInsideMapArea += mapAreaCollider.GetPlayerMapAreasList().Count;
