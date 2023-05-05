@@ -23,7 +23,7 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.Mouse4))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             this.transform.Rotate(Input.GetAxis("Mouse ScrollWheel") * rotationSpeed * Vector3.up, Space.World);
         }
@@ -53,11 +53,11 @@ public class CameraMove : MonoBehaviour
         {
             if (mousePos.y > Screen.height - borderY)
             {
-                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+                this.transform.position += Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.up.x, 0, transform.up.z).normalized;
             }
             if (mousePos.y < borderY)
             {
-                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+                this.transform.position -= Time.deltaTime * (xSpeed + transform.position.y/2) * new Vector3(transform.up.x, 0, transform.up.z).normalized;
             }
             if (mousePos.x > Screen.width - borderX)
             {

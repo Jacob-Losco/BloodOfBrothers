@@ -74,7 +74,7 @@ public class Unit : MonoBehaviour
             {
                 if (Physics.Raycast(floor, out var hit))
                 {
-                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 1, newPos.z);
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y + 1, newPos.z);
                 }
                 else
                 {
@@ -146,6 +146,9 @@ public class Unit : MonoBehaviour
                         }
                     }
 
+                    break;
+                case AIType.charge:
+                    destination = target.transform.position;
                     break;
                 case AIType.retreat:
                     hits = Physics.SphereCastAll(origin: transform.position, radius: maxFindRange, direction: Vector3.up, maxDistance: 0);

@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 746062d9848561f4e847076fde902604, type: 3}
       propertyPath: m_Name
-      value: Horse
+      value: Horse Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 746062d9848561f4e847076fde902604, type: 3}
