@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
@@ -54,9 +51,7 @@ public class Unit : MonoBehaviour
     void Start()
     {
         destination = transform.position;
-        actionManager = FindObjectOfType<ActionManager>();
-        manager = FindObjectOfType<GameManager>();
-        manager.totalFriendlyUnits += numUnits;
+        actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
         StartCoroutine(Cooldown());
     }
 
@@ -71,12 +66,11 @@ public class Unit : MonoBehaviour
             Vector3 dir = newPos - transform.position;
             Ray floor = new Ray(newPos, Vector3.down * 3);
             Ray forward = new Ray(transform.position, dir.normalized);
-            Debug.DrawRay(forward.origin,forward.direction* transform.localScale.z*2,Color.cyan);
-            if (!Physics.Raycast(forward, transform.localScale.z*2, 2))
+            if (!Physics.Raycast(forward, 1, 2))
             {
                 if (Physics.Raycast(floor, out var hit))
                 {
-                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 10, newPos.z);
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y + 1, newPos.z);
                 }
                 else
                 {
