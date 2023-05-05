@@ -64,13 +64,13 @@ public class Unit : MonoBehaviour
             destination = new Vector3(destination.x, transform.position.y, destination.z);
             Vector3 newPos = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
             Vector3 dir = newPos - transform.position;
-            Ray floor = new Ray(newPos, Vector3.down * 3);
+            Ray floor = new Ray(newPos, Vector3.down * transform.localScale.y);
             Ray forward = new Ray(transform.position, dir.normalized);
             if (!Physics.Raycast(forward, 1, 2))
             {
                 if (Physics.Raycast(floor, out var hit))
                 {
-                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y + 1, newPos.z);
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y/2 - 10, newPos.z);
                 }
                 else
                 {
