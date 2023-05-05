@@ -321,10 +321,12 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public float cooldown = 5;
+
     IEnumerator Cooldown()
     {
         inCooldown = true;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(cooldown);
         inCooldown = false;
     }
 }

@@ -106,18 +106,18 @@ MonoBehaviour:
   unitType: 2
   numUnits: 5
   unitHealth: 10
-  unitDamage: 2
+  unitDamage: 100
   maxFindRange: 60
-  maxAttackRange: 500
-  optimalAttackRange: 200
+  maxAttackRange: 600
+  optimalAttackRange: 400
   staticMaximumAccuracyRange: 0.75
   movementModifier: 1
-  distanceModifier: 0.5
+  distanceModifier: 0.25
   flankModifier: 6
   mode: 0
   inCooldown: 0
   lerpConstant: 0.2
-  rotationSpeed: 0.01
+  rotationSpeed: 0.5
   movementSpeed: 10
   maxMovementSpeed: 10
   target: {fileID: 0}
@@ -132,6 +132,7 @@ MonoBehaviour:
   debugDamage: 0
   debugPreventDeath: 0
   manager: {fileID: 0}
+  cooldown: 10
 --- !u!135 &-3062605052581008571
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -143,7 +144,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 15
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &3152476502306353441
 AudioSource:
@@ -157,7 +158,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4c73063b9eb25c245a97bc3cc4bfec64, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.63
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

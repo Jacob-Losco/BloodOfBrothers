@@ -29,17 +29,35 @@ public class ActionManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0)) {
             EndSelection();
         }
-        if(Input.GetKeyDown(KeyCode.Return)) {
+        if(Input.GetKeyDown(KeyCode.Space)) {
             paused = !paused;
         }
         if (selection.Count > 0)
         {
-            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(1))
             {
                 Debug.Log("ExecuteMove");
                 executeMove();
             }
-            
+            if (Input.GetKey(KeyCode.CapsLock))
+            {
+                Debug.Log("SwitchAI");
+                switchAI();
+            }   
+        }
+    }
+
+    private void switchAI()
+    {
+        foreach (Unit unit in selection)
+        {
+            if (unit.mode == Unit.AIType.hold)
+            {
+                unit.mode = Unit.AIType.engage;
+            } else
+            {
+                unit.mode = Unit.AIType.hold;
+            }
         }
     }
 

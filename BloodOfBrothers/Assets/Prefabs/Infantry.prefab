@@ -143,7 +143,7 @@ MonoBehaviour:
   team: 1
   unitType: 0
   numUnits: 35
-  unitHealth: 60
+  unitHealth: 30
   unitDamage: 0.25
   maxFindRange: 200
   maxAttackRange: 200
@@ -170,6 +170,7 @@ MonoBehaviour:
   debugDamage: 0
   debugPreventDeath: 0
   manager: {fileID: 0}
+  cooldown: 4
 --- !u!135 &5854592096264305038
 SphereCollider:
   m_ObjectHideFlags: 0
