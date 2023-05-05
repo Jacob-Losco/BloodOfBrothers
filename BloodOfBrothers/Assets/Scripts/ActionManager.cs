@@ -36,6 +36,7 @@ public class ActionManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
             {
+                Debug.Log("ExecuteMove");
                 executeMove();
             }
             
@@ -106,23 +107,21 @@ public class ActionManager : MonoBehaviour
         while(true)
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] hits = Physics.RaycastAll(ray, 200);
-            for (int i = 0; i < hits.Length; i++)
+            if (Physics.Raycast(ray, out var hit, 500))
             {
-                RaycastHit hit = hits[i];
+                Debug.DrawRay(ray.origin, ray.direction, Color.red, 2);
+                GameObject obj = hit.collider.gameObject;
+                if (obj.tag == "Unit")
                 {
-                    GameObject obj = hit.collider.gameObject;
-                    if (obj.tag == "Unit")
+                    Unit stats = obj.GetComponentInParent<Unit>();
+                    if (stats != null && !selection.Contains(stats) && stats.team == 1)
                     {
-                        Unit stats = obj.GetComponentInParent<Unit>();
-                        if (stats != null && !selection.Contains(stats) && stats.team == 1)
-                        {
-                                selection.Add(stats);
-                        }
+                        selection.Add(stats);
+                        Debug.Log(selection);
                     }
                 }
             }
-    
+
             // IMPORTANT: Tells Unity to "pause" here, render this frame and continue from here in the next frame
             yield return null;
         }

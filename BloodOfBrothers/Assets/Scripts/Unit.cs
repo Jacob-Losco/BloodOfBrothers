@@ -54,7 +54,8 @@ public class Unit : MonoBehaviour
     void Start()
     {
         destination = transform.position;
-        actionManager = GameObject.Find("SceneManager").GetComponent<ActionManager>();
+        actionManager = FindObjectOfType<ActionManager>();
+        manager = FindObjectOfType<GameManager>();
         manager.totalFriendlyUnits += numUnits;
         StartCoroutine(Cooldown());
     }
@@ -70,11 +71,12 @@ public class Unit : MonoBehaviour
             Vector3 dir = newPos - transform.position;
             Ray floor = new Ray(newPos, Vector3.down * 3);
             Ray forward = new Ray(transform.position, dir.normalized);
-            if (!Physics.Raycast(forward, 1, 2))
+            Debug.DrawRay(forward.origin,forward.direction* transform.localScale.z*2,Color.cyan);
+            if (!Physics.Raycast(forward, transform.localScale.z*2, 2))
             {
                 if (Physics.Raycast(floor, out var hit))
                 {
-                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y + 1, newPos.z);
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y - 10, newPos.z);
                 }
                 else
                 {

@@ -75,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 2650222595008775694}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7712012473822079379}
@@ -176,7 +176,7 @@ MonoBehaviour:
   team: 1
   unitType: 0
   numUnits: 20
-  unitHealth: 1
+  unitHealth: 20
   unitDamage: 1
   maxFindRange: 20
   maxAttackRange: 25
@@ -189,8 +189,8 @@ MonoBehaviour:
   inCooldown: 0
   lerpConstant: 0.02
   rotationSpeed: 2
-  movementSpeed: 2
-  maxMovementSpeed: 4
+  movementSpeed: 20
+  maxMovementSpeed: 20
   target: {fileID: 0}
   enemy: {fileID: 0}
   targets: []

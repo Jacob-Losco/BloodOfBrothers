@@ -1835,6 +1835,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3055367661565360301}
     m_Modifications:
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 57.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7375012956268335845, guid: 060547c087fa5e44794ed34c49211346, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -1882,6 +1890,18 @@ PrefabInstance:
     - target: {fileID: 8923376648581398773, guid: 060547c087fa5e44794ed34c49211346, type: 3}
       propertyPath: m_Name
       value: Bridge (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -201.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 060547c087fa5e44794ed34c49211346, type: 3}
@@ -1959,6 +1979,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3055367661565360301}
     m_Modifications:
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -89.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6181100790127697938, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 52.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7375012956268335845, guid: 060547c087fa5e44794ed34c49211346, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -2010,6 +2046,22 @@ PrefabInstance:
     - target: {fileID: 8923376648581398773, guid: 060547c087fa5e44794ed34c49211346, type: 3}
       propertyPath: m_Name
       value: Bridge
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -185.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986369396316458932, guid: 060547c087fa5e44794ed34c49211346, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 060547c087fa5e44794ed34c49211346, type: 3}
