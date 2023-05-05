@@ -59,13 +59,14 @@ public class ActionManager : MonoBehaviour
         
         if (Physics.Raycast(ray, out var hit))
         {
+            RaycastHit[] hits = Physics.RaycastAll(ray);
             GameObject obj = hit.collider.gameObject;
             foreach (Unit unit in selection)
             {
                 if (obj.tag == "Terrain")
                 {
                     //Jacob
-                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-3, 3)*(selection.Count-1), hit.point.y, hit.point.z + Random.Range(-3, 3) * (selection.Count - 1));
+                    Vector3 unitDestination = new Vector3(hit.point.x + Random.Range(-obj.transform.localScale.z, obj.transform.localScale.z) *(selection.Count-1), hit.point.y, hit.point.z + Random.Range(-obj.transform.localScale.z, obj.transform.localScale.z) * (selection.Count - 1));
                     unit.destination = unitDestination;
                 }
 

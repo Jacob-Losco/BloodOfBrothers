@@ -70,7 +70,7 @@ public class Unit : MonoBehaviour
             {
                 if (Physics.Raycast(floor, out var hit))
                 {
-                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y/2 - 10, newPos.z);
+                    transform.position = new Vector3(newPos.x, hit.point.y + transform.localScale.y/2, newPos.z);
                 }
                 else
                 {
@@ -111,7 +111,7 @@ public class Unit : MonoBehaviour
                         destination = this.transform.position;
                         mode = AIType.engage;
                     }
-                    else
+                    else if (!isMoving())
                     {
                         if (enemy.rightExposed())
                         {
@@ -215,7 +215,7 @@ public class Unit : MonoBehaviour
     }
     public bool isMoving()
     {
-        return (destination - transform.position).magnitude > 1;
+        return (destination - transform.position).magnitude > maxMovementSpeed;
     }
     public bool leftExposed()
     {
