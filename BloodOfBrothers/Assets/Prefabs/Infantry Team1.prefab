@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 888727398040210243, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Unit
+      objectReference: {fileID: 0}
     - target: {fileID: 2650222595008775694, guid: 4ea9602e8a18eb14183b89d7eff77981, type: 3}
       propertyPath: m_Name
       value: Infantry Team1

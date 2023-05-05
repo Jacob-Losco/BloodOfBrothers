@@ -9,7 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1543352404688794558, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_Name
-      value: Artillery Con
+      value: ConArtDone
+      objectReference: {fileID: 0}
+    - target: {fileID: 2043595525150142780, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
+      propertyPath: team
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5169139462312396197, guid: 04910e6d6202449b2847d0a5a14dbea5, type: 3}
       propertyPath: m_Materials.Array.data[0]

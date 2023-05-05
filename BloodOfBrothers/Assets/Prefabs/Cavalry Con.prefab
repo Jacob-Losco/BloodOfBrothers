@@ -63,6 +63,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cavalry Con
       objectReference: {fileID: 0}
+    - target: {fileID: 1688263726289685444, guid: 9f7ab204045fc4203a5919cd2a137d53, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Infantry
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644383732548927079, guid: 9f7ab204045fc4203a5919cd2a137d53, type: 3}
+      propertyPath: m_TagString
+      value: Enemy Unit
+      objectReference: {fileID: 0}
     - target: {fileID: 4352672192025959308, guid: 9f7ab204045fc4203a5919cd2a137d53, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.10299954

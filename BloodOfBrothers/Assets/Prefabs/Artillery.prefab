@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 151788020850235331}
   - component: {fileID: 2043595525150142780}
   - component: {fileID: -3062605052581008571}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Artillery
-  m_TagString: Untagged
+  m_TagString: Infantry
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -369,6 +369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soldier
       objectReference: {fileID: 0}
+    - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 410158, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -430,6 +434,10 @@ PrefabInstance:
     - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_Name
       value: Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 410158, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_RootOrder
@@ -493,6 +501,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soldier
       objectReference: {fileID: 0}
+    - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 410158, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -555,6 +567,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soldier
       objectReference: {fileID: 0}
+    - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 410158, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -616,6 +632,10 @@ PrefabInstance:
     - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_Name
       value: Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 148180, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 410158, guid: 8ec5396791eee7244a8fce2fd14a09ec, type: 3}
       propertyPath: m_RootOrder
